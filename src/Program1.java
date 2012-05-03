@@ -2,7 +2,7 @@ import lejos.nxt.Button;
 import lejos.nxt.LCD;
 import lejos.nxt.Motor;
 
-public class program1 {
+public class Program1 {
 
 	public static void main(String[] args) {
 		LCD.drawString("Program 1", 0, 0);
@@ -11,7 +11,7 @@ public class program1 {
 		LCD.drawString("Forward", 0, 1);
 		Button.waitForAnyPress();
 		Motor.A.backward();
-		LCD.drawString("Forward", 0, 2);
+		LCD.drawString("Backward", 0, 2);
 		Button.waitForAnyPress();
 		Motor.A.stop();
 	}
