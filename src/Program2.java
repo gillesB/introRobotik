@@ -8,6 +8,7 @@ public class Program2 {
 	public static void main(String[] args) {
 		int line = 0;
 		LCD.drawString("Program 2", 0, line++);
+		Button.waitForAnyPress();
 		Motor.A.setSpeed(720);
 		
 		Motor.A.forward();
