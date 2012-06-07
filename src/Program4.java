@@ -18,5 +18,6 @@ public class Program4 {
 		}
 		LCD.drawInt(Motor.A.getTachoCount(), 0, 1);
 		Button.waitForAnyPress();
+		
 	}
 }
