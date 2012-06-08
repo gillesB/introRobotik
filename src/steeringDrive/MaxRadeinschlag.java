@@ -40,7 +40,6 @@ public class MaxRadeinschlag {
 			default:
 				System.out.println("Unkown Button Pressed");
 				Button.waitForAnyPress();
-
 			}
 		}
 	}
