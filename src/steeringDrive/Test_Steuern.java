@@ -15,12 +15,12 @@ public class Test_Steuern {
 
 	
 	public static void main(String[] args) {
-		System.out.println("Steuern");
+		Auto a = new Auto();
 		Button.waitForAnyPress();
-		Motor.B.setSpeed(270);
-		Motor.B.rotate(-1300);
-		Motor.B.rotate(2600);		
-		Motor.B.rotate(-1300);
+		a.fahreWinkelAlpha(false);
+		Button.waitForAnyPress();
+
+		
 
 		
 

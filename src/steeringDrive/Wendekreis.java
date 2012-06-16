@@ -15,7 +15,8 @@ public class Wendekreis {
 
 	public static void main(String[] args) {
 		Button.waitForAnyPress();
-		//MaximalerEinschlag.einschlag_rechts();
+		
+		MaximalerEinschlag.einschlag_prozent(100);
 		DifferentialPilot pilot = new DifferentialPilot(WHEEL_DIAMETER,
 				TRACK_WIDTH, Motor.A, Motor.C, REVERSE);
 		pilot.setTravelSpeed(8);
