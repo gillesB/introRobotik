@@ -60,6 +60,7 @@ public class MaximalerEinschlag {
 	private static int currentSteeringLock = 0;
 	private static enum lastDirectionEnum {LEFT, RIGHT};
 	private static lastDirectionEnum lastDirection;
+	//TODO aufraumen!
 	public static void einschlag_prozent(int prozent, boolean immediateReturn) {
 		int restZumDrehen = prozent - currentSteeringLock;
 		currentSteeringLock = prozent;
@@ -78,7 +79,7 @@ public class MaximalerEinschlag {
 		} else { //restZumDrehen < 0  && lastDirection == lastDirectionEnum.LEFT
 			;
 		}
-		System.out.println("drehe um: "+ angle + " " + offset);
+		//System.out.println("drehe um: "+ angle + " " + offset);
 		Motor.B.rotate(angle + offset);
 
 		// int angle = 0;

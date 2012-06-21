@@ -1,7 +1,9 @@
 package steeringDrive;
 
-import lejos.nxt.Button;
+import lejos.nxt.ADSensorPort;
 import lejos.nxt.Motor;
+import lejos.nxt.SensorPort;
+import lejos.nxt.addon.EOPD;
 import lejos.robotics.navigation.DifferentialPilot;
 
 public class Auto {
@@ -21,6 +23,10 @@ public class Auto {
 	public final static boolean REVERSE = true;
 	DifferentialPilot pilot = new DifferentialPilot(WHEEL_DIAMETER,
 			TRACK_WIDTH, Motor.A, Motor.C, REVERSE);
+	
+	EOPD eopdRechts = new EOPD(SensorPort.S1, true);
+	EOPD eopdHinten = new EOPD(SensorPort.S2, true);
+
 
 	public void fahreWinkelAlpha(boolean direction) {
 		int dir = 1;
@@ -36,6 +42,33 @@ public class Auto {
 		MaximalerEinschlag.einschlag_prozent(100*dir);
 		pilot.travel(kreisbogen*dir);
 		MaximalerEinschlag.einschlag_prozent(0);
+	}
+	
+	float gemesseneDistanzStart;
+	public void messeStreckeStart(){
+		gemesseneDistanzStart = pilot.getMovement().getDistanceTraveled();
+	}
+	
+	public float messeStreckeStop(){
+		float gemesseneDistanzStop = pilot.getMovement().getDistanceTraveled();
+		//System.out.println("Gefahrene Disanz seit letztem Stop:" + (gemesseneDistanzStop-gemesseneDistanzStart));		
+		return gemesseneDistanzStop-gemesseneDistanzStart;
+	}
+	
+	public boolean gegenstandRechts(){
+		if (eopdRechts.readRawValue() < 1000){
+			return true;
+		} else {
+			return false;
+		}
+	}
+	
+	public boolean gegenstandHinten(){
+		if (eopdHinten.readRawValue() < 800){
+			return true;
+		} else {
+			return false;
+		}
 	}
 
 }

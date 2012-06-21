@@ -16,11 +16,13 @@ public class Test_Steuern {
 	
 	public static void main(String[] args) {
 		Auto a = new Auto();
-		Button.waitForAnyPress();
-		a.fahreWinkelAlpha(false);
-		Button.waitForAnyPress();
-		a.fahreWinkelAlpha(true);
+//rueckwaerts einparken und wieder ausparken		
+//		Button.waitForAnyPress();
+//		a.fahreWinkelAlpha(false);
+//		Button.waitForAnyPress();
+//		a.fahreWinkelAlpha(true);
 
+		
 		
 
 		
