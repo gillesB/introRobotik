@@ -19,6 +19,7 @@ public class Test_Steuern {
 		Button.waitForAnyPress();
 		a.fahreWinkelAlpha(false);
 		Button.waitForAnyPress();
+		a.fahreWinkelAlpha(true);
 
 		
 

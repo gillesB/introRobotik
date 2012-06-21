@@ -24,7 +24,7 @@ public class Auto {
 
 	public void fahreWinkelAlpha(boolean direction) {
 		int dir = 1;
-		if (direction != false){
+		if (direction == false){
 			dir = -1;
 		}
 		MaximalerEinschlag.einschlag_prozent(-100*dir);
@@ -33,7 +33,6 @@ public class Auto {
 		System.out.println("kreisbogen: " + kreisbogen);
 		System.out.println("minLaengeParkluecke: " + g);
 		pilot.travel(kreisbogen*dir);
-		Button.waitForAnyPress();
 		MaximalerEinschlag.einschlag_prozent(100*dir);
 		pilot.travel(kreisbogen*dir);
 		MaximalerEinschlag.einschlag_prozent(0);
