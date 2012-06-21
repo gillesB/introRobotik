@@ -1,5 +1,6 @@
 package steeringDrive;
 
+import lejos.nxt.Button;
 import lejos.nxt.Motor;
 import lejos.robotics.navigation.DifferentialPilot;
 
@@ -22,14 +23,20 @@ public class Auto {
 			TRACK_WIDTH, Motor.A, Motor.C, REVERSE);
 
 	public void fahreWinkelAlpha(boolean direction) {
-		MaximalerEinschlag.einschlag_prozent(100);
+		int dir = 1;
+		if (direction != false){
+			dir = -1;
+		}
+		MaximalerEinschlag.einschlag_prozent(-100*dir);
 		System.out.println("r: " + r);
 		System.out.println("alpha: " + alpha);
 		System.out.println("kreisbogen: " + kreisbogen);
 		System.out.println("minLaengeParkluecke: " + g);
-		pilot.travel(-kreisbogen);
-		MaximalerEinschlag.einschlag_prozent(-100);
-		pilot.travel(-kreisbogen);
+		pilot.travel(kreisbogen*dir);
+		Button.waitForAnyPress();
+		MaximalerEinschlag.einschlag_prozent(100*dir);
+		pilot.travel(kreisbogen*dir);
+		MaximalerEinschlag.einschlag_prozent(0);
 	}
 
 }
