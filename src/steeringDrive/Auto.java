@@ -1,6 +1,7 @@
 package steeringDrive;
 
 import lejos.nxt.ADSensorPort;
+import lejos.nxt.Button;
 import lejos.nxt.Motor;
 import lejos.nxt.SensorPort;
 import lejos.nxt.addon.EOPD;
@@ -14,7 +15,7 @@ public class Auto {
 	double b = 0; // Abstand von Hinterachse zum Wagenende
 	double r = Math.sqrt(Math.pow(R, 2) - Math.pow(f, 2)) - w / 2; // sqrt(R^2-f^2)-w/2
 	double p = 5.00;
-	double alpha = Math.acos((2 * r - w -p) / (2 * r));
+	double alpha = Math.acos((2 * r - w - p) / (2 * r));
 	double g = Math.sqrt(2 * r * w + Math.pow(f, 2)) + b; // minLaengeParkluecke
 	double kreisbogen = r * alpha;
 
@@ -23,52 +24,90 @@ public class Auto {
 	public final static boolean REVERSE = true;
 	DifferentialPilot pilot = new DifferentialPilot(WHEEL_DIAMETER,
 			TRACK_WIDTH, Motor.A, Motor.C, REVERSE);
-	
+
 	EOPD eopdRechts = new EOPD(SensorPort.S1, true);
 	EOPD eopdHinten = new EOPD(SensorPort.S2, true);
 
-
 	public void fahreWinkelAlpha(boolean direction) {
 		int dir = 1;
-		if (direction == false){
+		if (direction == false) {
 			dir = -1;
 		}
-		MaximalerEinschlag.einschlag_prozent(-100*dir);
+		RadEinschlag.einschlag_prozent(-100 * dir);
 		System.out.println("r: " + r);
 		System.out.println("alpha: " + alpha);
 		System.out.println("kreisbogen: " + kreisbogen);
 		System.out.println("minLaengeParkluecke: " + g);
-		pilot.travel(kreisbogen*dir);
-		MaximalerEinschlag.einschlag_prozent(100*dir);
-		pilot.travel(kreisbogen*dir);
-		MaximalerEinschlag.einschlag_prozent(0);
+		pilot.travel(kreisbogen * dir);
+		RadEinschlag.einschlag_prozent(100 * dir);
+		pilot.travel(kreisbogen * dir);
+		RadEinschlag.einschlag_prozent(0);
 	}
-	
+
 	float gemesseneDistanzStart;
-	public void messeStreckeStart(){
+
+	public void messeStreckeStart() {
 		gemesseneDistanzStart = pilot.getMovement().getDistanceTraveled();
 	}
-	
-	public float messeStreckeStop(){
+
+	public float messeStreckeStop() {
 		float gemesseneDistanzStop = pilot.getMovement().getDistanceTraveled();
-		//System.out.println("Gefahrene Disanz seit letztem Stop:" + (gemesseneDistanzStop-gemesseneDistanzStart));		
-		return gemesseneDistanzStop-gemesseneDistanzStart;
+		// System.out.println("Gefahrene Disanz seit letztem Stop:" +
+		// (gemesseneDistanzStop-gemesseneDistanzStart));
+		return gemesseneDistanzStop - gemesseneDistanzStart;
 	}
-	
-	public boolean gegenstandRechts(){
-		if (eopdRechts.readRawValue() < 1000){
+
+	public boolean gegenstandRechts() {
+		if (eopdRechts.readRawValue() < 1000) {
 			return true;
 		} else {
 			return false;
 		}
 	}
-	
-	public boolean gegenstandHinten(){
-		if (eopdHinten.readRawValue() < 800){
+
+	public boolean gegenstandHinten() {
+		if (eopdHinten.readRawValue() < 800) {
 			return true;
 		} else {
 			return false;
 		}
+	}
+
+	int distance;
+	int MotorBAnfangsgeschw;
+	public void fahreAnMauerEntlangStart(){
+		distance = eopdRechts.readRawValue();
+		System.out.println(distance);
+		MotorBAnfangsgeschw = Motor.B.getRotationSpeed();
+		Motor.B.setSpeed(Motor.B.getMaxSpeed());
+	}
+
+	public void fahreAnMauerEntlang() {
+		int currentDistance = eopdRechts.readRawValue();
+		//Motor.B.flt();
+		System.out.println("currentDistance: " + currentDistance);
+		if (currentDistance > distance) { //Distanz zur Mauer ist groesser geworden
+			if (Motor.B.getTachoCount() < 200) {
+				Motor.B.forward();
+			} else {
+				Motor.B.flt();
+			}
+			System.out.println("Nach rechts bewegen: "+Motor.B.getTachoCount());
+		} else if (currentDistance < distance) {
+			if(Motor.B.getTachoCount() > -200){
+				Motor.B.backward();	
+			} else {
+				Motor.B.flt();
+			}
+			System.out.println("Nach links bewegen: "+ Motor.B.getTachoCount());
+		} else {
+			System.out.println("Nicht bewegen.");
+		}
+	}
+
+	public void fahreAnMauerEntlangStop() {
+		RadEinschlag.einschlag_prozent(0, true);
+		Motor.B.setSpeed(MotorBAnfangsgeschw);		
 	}
 
 }

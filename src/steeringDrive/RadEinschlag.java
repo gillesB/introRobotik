@@ -9,19 +9,19 @@ import lejos.nxt.Motor;
  * experimentell ermittelt.
  * 
  */
-public class MaximalerEinschlag {
+public class RadEinschlag {
 
 	private static final int MAXIMALER_EINSCHLAG_LINKS = -1150; // in Grad
 	private static final int MAXIMALER_EINSCHLAG_RECHTS = 1150; // in Grad
 	private static final int OFFSET_LEFT_TO_RIGHT = 150;
 	private static final int OFFSET_RIGHT_TO_LEFT = 150;
 
-	public static void einschlag_links() {
-		einschlag_links(false);
+	public static void max_einschlag_links() {
+		max_einschlag_links(false);
 	}
 
-	public static void einschlag_rechts() {
-		einschlag_rechts(false);
+	public static void max_einschlag_rechts() {
+		max_einschlag_rechts(false);
 	}
 
 	/**
@@ -29,7 +29,7 @@ public class MaximalerEinschlag {
 	 * 
 	 * @param immediateReturn
 	 */
-	public static void einschlag_links(boolean immediateReturn) {
+	public static void max_einschlag_links(boolean immediateReturn) {
 		Motor.B.rotateTo(MAXIMALER_EINSCHLAG_LINKS, immediateReturn);
 	}
 
@@ -38,7 +38,7 @@ public class MaximalerEinschlag {
 	 * 
 	 * @param immediateReturn
 	 */
-	public static void einschlag_rechts(boolean immediateReturn) {
+	public static void max_einschlag_rechts(boolean immediateReturn) {
 		Motor.B.rotateTo(MAXIMALER_EINSCHLAG_RECHTS, immediateReturn);
 	}
 
@@ -46,6 +46,11 @@ public class MaximalerEinschlag {
 		einschlag_prozent(prozent, false);
 	}
 
+
+	private static int currentSteeringLock = 0;
+	private static enum lastDirectionEnum {LEFT, RIGHT};
+	private static lastDirectionEnum lastDirection;
+	//TODO aufraumen!
 	/**
 	 * Bewegt die Steuerung des Wagens um einen absoluten Wert. Dieser Wert wird
 	 * in Prozent angegeben. Wobei -100% den linke Einschlagpunkt darstellt, 0%
@@ -57,11 +62,8 @@ public class MaximalerEinschlag {
 	 *            iff true, method returns immediately, thus allowing monitoring
 	 *            of sensors in the calling thread.
 	 */
-	private static int currentSteeringLock = 0;
-	private static enum lastDirectionEnum {LEFT, RIGHT};
-	private static lastDirectionEnum lastDirection;
-	//TODO aufraumen!
 	public static void einschlag_prozent(int prozent, boolean immediateReturn) {
+		Motor.B.stop();
 		int restZumDrehen = prozent - currentSteeringLock;
 		currentSteeringLock = prozent;
 		int angle = 0;
@@ -90,6 +92,10 @@ public class MaximalerEinschlag {
 		// angle = MAXIMALER_EINSCHLAG_RECHTS/100*prozent;
 		// }
 		// Motor.B.rotateTo(angle, immediateReturn);
+	}
+	
+	public static void stop(){
+		Motor.B.stop();
 	}
 
 }

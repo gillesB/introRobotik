@@ -11,15 +11,15 @@ public class Offset_steuerung {
 //		Button.waitForAnyPress();
 //		Motor.B.rotate(-1150);
 //		Motor.B.rotate(1300);
-		MaximalerEinschlag.einschlag_prozent(-100);
+		RadEinschlag.einschlag_prozent(-100);
 		//Button.waitForAnyPress();
-		MaximalerEinschlag.einschlag_prozent(0);
+		RadEinschlag.einschlag_prozent(0);
 		//Button.waitForAnyPress();
-		MaximalerEinschlag.einschlag_prozent(100);
+		RadEinschlag.einschlag_prozent(100);
 		//Button.waitForAnyPress();
-		MaximalerEinschlag.einschlag_prozent(-50);
+		RadEinschlag.einschlag_prozent(-50);
 		//Button.waitForAnyPress();
-		MaximalerEinschlag.einschlag_prozent(0);
+		RadEinschlag.einschlag_prozent(0);
 		//Button.waitForAnyPress();
 		
 		
