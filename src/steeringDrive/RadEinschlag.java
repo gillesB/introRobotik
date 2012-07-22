@@ -1,5 +1,6 @@
 package steeringDrive;
 
+import lejos.nxt.Button;
 import lejos.nxt.Motor;
 
 /**
@@ -14,7 +15,7 @@ public class RadEinschlag {
 	private static final int MAXIMALER_EINSCHLAG_LINKS = -1150; // in Grad
 	private static final int MAXIMALER_EINSCHLAG_RECHTS = 1150; // in Grad
 	private static final int OFFSET_LEFT_TO_RIGHT = 150;
-	private static final int OFFSET_RIGHT_TO_LEFT = 150;
+	private static final int OFFSET_RIGHT_TO_LEFT = -150;
 
 	public static void max_einschlag_links() {
 		max_einschlag_links(false);
@@ -69,29 +70,7 @@ public class RadEinschlag {
 		int angle = 0;
 		angle = MAXIMALER_EINSCHLAG_RECHTS / 100 * restZumDrehen;
 		
-		int offset = 0;
-		if(restZumDrehen > 0  && lastDirection == lastDirectionEnum.RIGHT){
-			;
-		} else if (restZumDrehen > 0  && lastDirection == lastDirectionEnum.LEFT) {
-			offset = OFFSET_LEFT_TO_RIGHT;
-			lastDirection = lastDirectionEnum.RIGHT;
-		} else if (restZumDrehen < 0  && lastDirection == lastDirectionEnum.RIGHT){
-			offset = OFFSET_RIGHT_TO_LEFT;
-			lastDirection = lastDirectionEnum.LEFT;
-		} else { //restZumDrehen < 0  && lastDirection == lastDirectionEnum.LEFT
-			;
-		}
-		//System.out.println("drehe um: "+ angle + " " + offset);
-		Motor.B.rotate(angle + offset);
-
-		// int angle = 0;
-		// //TODO pruefe ob nicht doch float benutzt werden muss
-		// if(prozent < 0){
-		// angle = MAXIMALER_EINSCHLAG_LINKS/100*(-prozent);
-		// } else if (prozent > 0){
-		// angle = MAXIMALER_EINSCHLAG_RECHTS/100*prozent;
-		// }
-		// Motor.B.rotateTo(angle, immediateReturn);
+		Motor.B.rotate(angle);
 	}
 	
 	public static void stop(){

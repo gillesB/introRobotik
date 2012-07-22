@@ -1,5 +1,7 @@
 package steeringDrive;
 
+import java.io.File;
+
 import lejos.nxt.Button;
 import lejos.nxt.Sound;
 
@@ -28,11 +30,22 @@ public class Parke2Objekte {
 		//TODO programm sturzt ab
 		if (parkluecke < auto.g) { //Parkluecke kleiner als errechneter Mindestmass fuer Parkluecke
 			Sound.buzz();
+			Button.waitForAnyPress();
 			return;
 		}
 		auto.fahreWinkelAlpha(false);
 		nachVorneRangieren(parkluecke);
 		Button.waitForAnyPress();
+		hintenAnGegenstandFahren();
+		auto.fahreWinkelAlphaVorwaerts(true);
+
+		Sound.setVolume(100);
+		File soundFile = new File("smw_course_clear.wav");
+		System.out.println(soundFile.length());
+		Sound.playSample(soundFile,100);
+		
+		RadEinschlag.einschlag_prozent(0);
+		auto.pilot.travel(50);
 
 	}
 
