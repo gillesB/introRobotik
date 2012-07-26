@@ -1,6 +1,5 @@
 package steeringDrive;
 
-import lejos.nxt.Button;
 import lejos.nxt.Motor;
 
 /**
