@@ -5,16 +5,12 @@ import lejos.nxt.Motor;
 /**
  * Bewegt die Steuerung des Wagens. Wir gehen davon aus, dass der Motor der die
  * Steuerung bewegt, um n Grad drehen muss, um den Einschlagspunkt der Räder zu
- * erreichen. Diese 2 Gradzahlen (linker und rechter Einschlagspunkt) wurden
- * experimentell ermittelt.
+ * erreichen. Die Gradzahl fuer den Einschlagspunkt wurde experimentell ermittelt.
  * 
  */
 public class RadEinschlag {
 
-	private static final int MAXIMALER_EINSCHLAG_LINKS = -1150; // in Grad
-	private static final int MAXIMALER_EINSCHLAG_RECHTS = 1150; // in Grad
-	private static final int OFFSET_LEFT_TO_RIGHT = 150;
-	private static final int OFFSET_RIGHT_TO_LEFT = -150;
+	private static final int MAXIMALER_EINSCHLAG = 1150; // in Grad
 
 	public static void max_einschlag_links() {
 		max_einschlag_links(false);
@@ -30,7 +26,7 @@ public class RadEinschlag {
 	 * @param immediateReturn
 	 */
 	public static void max_einschlag_links(boolean immediateReturn) {
-		Motor.B.rotateTo(MAXIMALER_EINSCHLAG_LINKS, immediateReturn);
+		Motor.B.rotateTo(-MAXIMALER_EINSCHLAG, immediateReturn);
 	}
 
 	/**
@@ -39,7 +35,7 @@ public class RadEinschlag {
 	 * @param immediateReturn
 	 */
 	public static void max_einschlag_rechts(boolean immediateReturn) {
-		Motor.B.rotateTo(MAXIMALER_EINSCHLAG_RECHTS, immediateReturn);
+		Motor.B.rotateTo(MAXIMALER_EINSCHLAG, immediateReturn);
 	}
 
 	public static void einschlag_prozent(int prozent) {
@@ -47,15 +43,12 @@ public class RadEinschlag {
 	}
 
 
-	private static int currentSteeringLock = 0;
-	private static enum lastDirectionEnum {LEFT, RIGHT};
-	private static lastDirectionEnum lastDirection;
-	//TODO aufraumen!
+	private static int aktuellerEinschlag = 0;
 	/**
 	 * Bewegt die Steuerung des Wagens um einen absoluten Wert. Dieser Wert wird
 	 * in Prozent angegeben. Wobei -100% den linke Einschlagpunkt darstellt, 0%
 	 * die Ausgangsstellung der Räder darstellt und 100% den rechten
-	 * Einschlagpunkt dartsellt.
+	 * Einschlagpunkt darstellt.
 	 * 
 	 * @param prozent
 	 * @param immediateReturn
@@ -64,10 +57,10 @@ public class RadEinschlag {
 	 */
 	public static void einschlag_prozent(int prozent, boolean immediateReturn) {
 		Motor.B.stop();
-		int restZumDrehen = prozent - currentSteeringLock;
-		currentSteeringLock = prozent;
+		int restZumDrehen = prozent - aktuellerEinschlag;
+		aktuellerEinschlag = prozent;
 		int angle = 0;
-		angle = MAXIMALER_EINSCHLAG_RECHTS / 100 * restZumDrehen;
+		angle = MAXIMALER_EINSCHLAG / 100 * restZumDrehen;
 		
 		Motor.B.rotate(angle);
 	}
