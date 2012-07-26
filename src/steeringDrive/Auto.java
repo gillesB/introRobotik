@@ -38,6 +38,7 @@ public class Auto {
 	public Auto() {
 		super();
 		this.pilot.setTravelSpeed(15); // cm/s
+		Sound.setVolume(50);
 	}
 
 	public void rueckwaertsEinparken(float parkluecke) {
@@ -47,22 +48,21 @@ public class Auto {
 		System.out.println("kreisbogen: " + kreisbogen);
 		System.out.println("minLaengeParkluecke: " + g);
 		pilot.travel(-kreisbogen, true);
-		while (pilot.isMoving()) {
-			if (gegenstandHinten()) {
-				pilot.stop();
-				Sound.buzz();
-			}
-		}
+		this.achteAufGegenstandHinten();
 		RadEinschlag.einschlag_prozent(-100);
 		pilot.travel(-kreisbogen, true);
+		this.achteAufGegenstandHinten();
+		RadEinschlag.einschlag_prozent(0);
+		nachVorneRangieren(parkluecke);
+	}
+
+	public void achteAufGegenstandHinten() {
 		while (pilot.isMoving()) {
 			if (gegenstandHinten()) {
 				pilot.stop();
 				Sound.buzz();
 			}
 		}
-		RadEinschlag.einschlag_prozent(0);
-		nachVorneRangieren(parkluecke);
 	}
 
 	public void rausfahren() {
@@ -72,9 +72,9 @@ public class Auto {
 		System.out.println("alpha: " + alpha);
 		System.out.println("kreisbogen: " + kreisbogen);
 		System.out.println("minLaengeParkluecke: " + g);
-		pilot.travel(kreisbogen * 0.80, true);
+		pilot.travel(kreisbogen * 0.80);
 		RadEinschlag.einschlag_prozent(100);
-		pilot.travel(kreisbogen, true);
+		pilot.travel(kreisbogen);
 	}
 
 	float gemesseneDistanzStart;
@@ -168,16 +168,16 @@ public class Auto {
 	}
 
 	public void schlussfahrt() {
-		
+
 		RadEinschlag.einschlag_prozent(0);
-		
+
 		Sound.setVolume(100);
 		File soundFile = new File("smw_course_clear.wav");
 		System.out.println(soundFile.length());
-		Sound.playSample(soundFile,100);
-		
+		Sound.playSample(soundFile, 100);
+
 		this.pilot.travel(50);
-		
+
 	}
 
 }
