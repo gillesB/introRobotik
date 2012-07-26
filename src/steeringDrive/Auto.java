@@ -114,41 +114,4 @@ public class Auto {
 		}
 	}
 
-	int distance;
-	int MotorBAnfangsgeschw;
-	public void fahreAnMauerEntlangStart(){
-		distance = eopdRechts.readRawValue();
-		System.out.println(distance);
-		MotorBAnfangsgeschw = Motor.B.getRotationSpeed();
-		Motor.B.setSpeed(Motor.B.getMaxSpeed());
-	}
-
-	public void fahreAnMauerEntlang() {
-		int currentDistance = eopdRechts.readRawValue();
-		//Motor.B.flt();
-		System.out.println("currentDistance: " + currentDistance);
-		if (currentDistance > distance) { //Distanz zur Mauer ist groesser geworden
-			if (Motor.B.getTachoCount() < 200) {
-				Motor.B.forward();
-			} else {
-				Motor.B.flt();
-			}
-			System.out.println("Nach rechts bewegen: "+Motor.B.getTachoCount());
-		} else if (currentDistance < distance) {
-			if(Motor.B.getTachoCount() > -200){
-				Motor.B.backward();	
-			} else {
-				Motor.B.flt();
-			}
-			System.out.println("Nach links bewegen: "+ Motor.B.getTachoCount());
-		} else {
-			System.out.println("Nicht bewegen.");
-		}
-	}
-
-	public void fahreAnMauerEntlangStop() {
-		RadEinschlag.einschlag_prozent(0, true);
-		Motor.B.setSpeed(MotorBAnfangsgeschw);		
-	}
-
 }
