@@ -30,7 +30,7 @@ public class Auto {
 			spurweite, Motor.A, Motor.C, rueckwaertslaufend);
 
 	private double distanzSensorHinterachse = 9.00;
-	private float maximaleParkluecke = 70;
+	private float maximaleParkluecke = 65;
 
 	private EOPD eopdRechts = new EOPD(SensorPort.S1, true);
 	private EOPD eopdHinten = new EOPD(SensorPort.S2, true);
@@ -81,10 +81,10 @@ public class Auto {
 	}
 
 	public void rueckwaertsEinparken(float parkluecke) {
-		RadEinschlag.einschlag_prozent(100);
+		RadEinschlag.einschlag_prozent(110);
 		pilot.travel(-kreisbogen, true);
 		this.achteAufGegenstandHinten();
-		RadEinschlag.einschlag_prozent(-100);
+		RadEinschlag.einschlag_prozent(-110);
 		pilot.travel(-kreisbogen, true);
 		this.achteAufGegenstandHinten();
 		// Ausgleich einer Unpraezision der Lenkung
@@ -97,10 +97,11 @@ public class Auto {
 	public void rausfahren() {
 		this.hintenAnGegenstandFahren();
 		RadEinschlag.einschlag_prozent(-100);
-		pilot.travel(kreisbogen * 0.80);
+		pilot.travel(kreisbogen);
 		RadEinschlag.einschlag_prozent(100);
 		pilot.travel(kreisbogen);
-		RadEinschlag.einschlag_prozent(0);
+		int offset = -10;
+		RadEinschlag.einschlag_prozent(0 + offset);
 	}
 
 	public void schlussfahrt() {
@@ -152,7 +153,7 @@ public class Auto {
 	}
 
 	private boolean gegenstandHinten() {
-		if (eopdHinten.readRawValue() < 800) {
+		if (eopdHinten.readRawValue() < 900) {
 			return true;
 		} else {
 			return false;

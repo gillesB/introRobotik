@@ -21,10 +21,10 @@ public class Parke2Objekte {
 		}		
 
 		auto.rueckwaertsEinparken(parkluecke);
-		Button.waitForAnyPress();
-		auto.rausfahren();
+//		Button.waitForAnyPress();
+//		auto.rausfahren();
 		
-		auto.schlussfahrt();
+//		auto.schlussfahrt();
 
 	}
 
