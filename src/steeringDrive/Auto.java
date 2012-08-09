@@ -71,7 +71,7 @@ public class Auto {
 
 	public boolean kannEinparken(float parkluecke) {
 		System.out.println("Parkluecke < g?: " + parkluecke + " < " + this.g);
-		if (parkluecke < this.g) { // Parkluecke kleiner als errechneter
+		if (parkluecke < this.maximaleParkluecke) { // Parkluecke kleiner als errechneter
 									// Mindestmass fuer Parkluecke
 			Sound.buzz();
 			Button.waitForAnyPress();
@@ -88,7 +88,7 @@ public class Auto {
 		pilot.travel(-kreisbogen, true);
 		this.achteAufGegenstandHinten();
 		// Ausgleich einer Unpraezision der Lenkung
-		int offset = 10;
+		int offset = 20;
 		RadEinschlag.einschlag_prozent(0 + offset);
 
 		nachVorneRangieren(parkluecke);
