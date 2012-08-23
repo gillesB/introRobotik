@@ -9,6 +9,12 @@ import lejos.nxt.Sound;
 import lejos.nxt.addon.EOPD;
 import lejos.robotics.navigation.DifferentialPilot;
 
+/**
+ * Beschreibt die Ausmasse des Autos sowie die benötigten Funktionen, die es dem
+ * Auto erlaubt rückwärts ein- und auszuparken. Beim Erstellen der Klasse wurde
+ * sich an das Paper "Ein mathematisches Modell zum Parallelparken" von Norbert
+ * Herrmann orientiert.
+ */
 public class Auto {
 
 	private double f = 20.5; // Abstand von Hinterachse zur Wagenfront
@@ -34,7 +40,7 @@ public class Auto {
 
 	private EOPD eopdRechts = new EOPD(SensorPort.S1, true);
 	private EOPD eopdHinten = new EOPD(SensorPort.S2, true);
-	
+
 	private float gemesseneStreckeStart;
 
 	public Auto() {
@@ -43,6 +49,10 @@ public class Auto {
 		Sound.setVolume(50);
 	}
 
+	/**
+	 * Der Wagen fährt vorwärts und passiert einen Gegenstand. Nach dem
+	 * passieren fährt der Wagen weiterhin vorwärts.
+	 */
 	public void passiereErstenGegenstand() {
 		pilot.forward();
 		while (!this.gegenstandRechts())
@@ -55,6 +65,13 @@ public class Auto {
 		Sound.twoBeeps();
 	}
 
+	/**
+	 * Der fahrende Wagen fährt entlang der potentiellen Parklücke, diese wird
+	 * dabei vermessen. Das Fahrzeug fährt, bis es einen zweiten Gegenstand
+	 * findet oder bis die Parklücke gross genug ist um einzuparken.
+	 * 
+	 * @return die Länge der Parklücke
+	 */
 	public float fahreBisZweiterGegenstandUndErmittleParkluecke() {
 		float parkluecke = vermesseParkluecke();
 
@@ -69,10 +86,19 @@ public class Auto {
 
 	}
 
+	/**
+	 * überprüft ob der Wagen in eine Parklücke einparken kann, oder nicht. Gibt
+	 * dem entsprechend true oder false zurück
+	 * 
+	 * @param parkluecke
+	 *            , Länge einer Parklücke
+	 * @return true, Wagen kann einparken, falls andernfalls.
+	 */
 	public boolean kannEinparken(float parkluecke) {
 		System.out.println("Parkluecke < g?: " + parkluecke + " < " + this.g);
-		if (parkluecke < this.maximaleParkluecke) { // Parkluecke kleiner als errechneter
-									// Mindestmass fuer Parkluecke
+		if (parkluecke < this.maximaleParkluecke) { // Parkluecke kleiner als
+													// errechneter
+			// Mindestmass fuer Parkluecke
 			Sound.buzz();
 			Button.waitForAnyPress();
 			return false;
@@ -80,6 +106,12 @@ public class Auto {
 		return true;
 	}
 
+	/**
+	 * der Wagen fährt rückwärts in die Parklücke rein und rangiert sich in die
+	 * mitte von dieser.
+	 * 
+	 * @param parkluecke
+	 */
 	public void rueckwaertsEinparken(float parkluecke) {
 		RadEinschlag.einschlag_prozent(110);
 		pilot.travel(-kreisbogen, true);
@@ -94,6 +126,9 @@ public class Auto {
 		nachVorneRangieren(parkluecke);
 	}
 
+	/**
+	 * der Wagen fährt vorwärts aus der Parklücke raus.
+	 */
 	public void rausfahren() {
 		this.hintenAnGegenstandFahren();
 		RadEinschlag.einschlag_prozent(-100);
@@ -104,6 +139,9 @@ public class Auto {
 		RadEinschlag.einschlag_prozent(0 + offset);
 	}
 
+	/**
+	 * der Wagen fährt geradeaus und spielt ein Lied
+	 */
 	public void schlussfahrt() {
 		Sound.setVolume(100);
 		File soundFile = new File("smw_course_clear.wav");
@@ -114,6 +152,10 @@ public class Auto {
 
 	}
 
+	/**
+	 * der fahrende Wagen stoppt sobald sich ein Gegenstand zu nahe hinter dem
+	 * Wagen befindet.
+	 */
 	private void achteAufGegenstandHinten() {
 		while (pilot.isMoving()) {
 			if (gegenstandHinten()) {
@@ -121,15 +163,6 @@ public class Auto {
 				Sound.buzz();
 			}
 		}
-	}
-
-	private void messeStreckeStart() {
-		gemesseneStreckeStart = pilot.getMovement().getDistanceTraveled();
-	}
-
-	private float messeStrecke() {
-		return pilot.getMovement().getDistanceTraveled()
-				- gemesseneStreckeStart;
 	}
 
 	private float vermesseParkluecke() {
@@ -144,6 +177,21 @@ public class Auto {
 		return parkluecke;
 	}
 
+	private void messeStreckeStart() {
+		gemesseneStreckeStart = pilot.getMovement().getDistanceTraveled();
+	}
+
+	private float messeStrecke() {
+		return pilot.getMovement().getDistanceTraveled()
+				- gemesseneStreckeStart;
+	}
+
+	/**
+	 * Gibt true zurück wenn sich ein Gegenstand nah an der rechten Seite des
+	 * Wagens befindet. False, andernfalls.
+	 * 
+	 * @return
+	 */
 	private boolean gegenstandRechts() {
 		if (eopdRechts.readRawValue() < 1000) {
 			return true;
@@ -152,6 +200,12 @@ public class Auto {
 		}
 	}
 
+	/**
+	 * Gibt true zurück wenn sich ein Gegenstand nah hinter dem Wagen befindet.
+	 * False, andernfalls.
+	 * 
+	 * @return
+	 */
 	private boolean gegenstandHinten() {
 		if (eopdHinten.readRawValue() < 900) {
 			return true;
@@ -160,6 +214,9 @@ public class Auto {
 		}
 	}
 
+	/**
+	 * Der Wagen Fährt rückwärts, nahe an ein Gegenstand ran und stoppt dann.
+	 */
 	private void hintenAnGegenstandFahren() {
 		this.pilot.backward();
 		while (!this.gegenstandHinten())
@@ -168,6 +225,12 @@ public class Auto {
 		this.pilot.stop();
 	}
 
+	/**
+	 * Der Wagen fährt nach hinten nah an einen Gegenstand, und fährt dann nach
+	 * vorne bis es in der Mitte der Parklücke steht.
+	 * 
+	 * @param parkluecke
+	 */
 	private void nachVorneRangieren(float parkluecke) {
 		hintenAnGegenstandFahren();
 		System.out.println("Parkluecke: " + parkluecke);

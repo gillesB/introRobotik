@@ -5,12 +5,14 @@ import lejos.nxt.Motor;
 /**
  * Bewegt die Steuerung des Wagens. Wir gehen davon aus, dass der Motor der die
  * Steuerung bewegt, um n Grad drehen muss, um den Einschlagspunkt der Räder zu
- * erreichen. Die Gradzahl fuer den Einschlagspunkt wurde experimentell ermittelt.
+ * erreichen. Die Gradzahl fuer den Einschlagspunkt wurde experimentell
+ * ermittelt. Weiterhin gehen wir davon aus, dass beim Einschalten des Wagens
+ * die Räder gerade stehen.
  * 
  */
 public class RadEinschlag {
 
-	//private static final int MAXIMALER_EINSCHLAG = 1150; // in Grad
+	// private static final int MAXIMALER_EINSCHLAG = 1150; // in Grad
 	private static final int MAXIMALER_EINSCHLAG = 1000;
 
 	public static void max_einschlag_links() {
@@ -43,8 +45,8 @@ public class RadEinschlag {
 		einschlag_prozent(prozent, false);
 	}
 
-
 	private static int aktuellerEinschlag = 0;
+
 	/**
 	 * Bewegt die Steuerung des Wagens um einen absoluten Wert. Dieser Wert wird
 	 * in Prozent angegeben. Wobei -100% den linke Einschlagpunkt darstellt, 0%
@@ -62,11 +64,11 @@ public class RadEinschlag {
 		aktuellerEinschlag = prozent;
 		int angle = 0;
 		angle = MAXIMALER_EINSCHLAG / 100 * restZumDrehen;
-		
+
 		Motor.B.rotate(angle);
 	}
-	
-	public static void stop(){
+
+	public static void stop() {
 		Motor.B.stop();
 	}
 
