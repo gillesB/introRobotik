@@ -117,9 +117,11 @@ public class Auto {
 		pilot.travel(-kreisbogen, true);
 		this.achteAufGegenstandHinten();
 		RadEinschlag.einschlag_prozent(-110);
-		pilot.travel(-kreisbogen, true);
+		// Ausgleich einer Unpräzision
+		double offsetKreisbogen = 0.9;
+		pilot.travel(-kreisbogen*offsetKreisbogen, true);
 		this.achteAufGegenstandHinten();
-		// Ausgleich einer Unpraezision der Lenkung
+		// Ausgleich einer Unpräzision der Lenkung
 		int offset = 20;
 		RadEinschlag.einschlag_prozent(0 + offset);
 
@@ -134,7 +136,9 @@ public class Auto {
 		RadEinschlag.einschlag_prozent(-100);
 		pilot.travel(kreisbogen);
 		RadEinschlag.einschlag_prozent(100);
-		pilot.travel(kreisbogen);
+		// Ausgleich einer Unpräzision
+		double offsetKreisbogen = 1.10;
+		pilot.travel(kreisbogen*offsetKreisbogen);
 		int offset = -10;
 		RadEinschlag.einschlag_prozent(0 + offset);
 	}

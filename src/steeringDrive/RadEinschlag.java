@@ -13,7 +13,7 @@ import lejos.nxt.Motor;
 public class RadEinschlag {
 
 	// private static final int MAXIMALER_EINSCHLAG = 1150; // in Grad
-	private static final int MAXIMALER_EINSCHLAG = 1000;
+	private static final int MAXIMALER_EINSCHLAG = 990;
 
 	public static void max_einschlag_links() {
 		max_einschlag_links(false);
